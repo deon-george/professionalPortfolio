@@ -28,7 +28,7 @@
     <div class="hero-text">
         <p class="welcome">WELCOME TO MY PORTFOLIO</p>
 
-        <h1>Hello, I'm <span>Deon George</span></h1>
+        <h1 id="typewriter">Hello, I'm <span>Deon George</span></h1>
 
         <h3>
             BTech Computer Science Engineering Student
@@ -76,6 +76,68 @@
 <footer>
     <p>© 2026 Deon George | Professional Portfolio</p>
 </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const h1 = document.getElementById("typewriter");
+        
+        // Extract text from the original h1 to preserve SEO and fallback
+        let part1 = "";
+        let part2 = "";
+        
+        // Find text node and span
+        Array.from(h1.childNodes).forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                part1 += node.textContent;
+            } else if (node.tagName === "SPAN") {
+                part2 += node.textContent;
+            }
+        });
+        
+        // Clear the h1
+        h1.innerHTML = "";
+        
+        let i = 0;
+        let isPart2 = false;
+        
+        // Create elements
+        const textNode1 = document.createTextNode("");
+        const spanNode = document.createElement("span");
+        const cursorNode = document.createElement("span");
+        
+        cursorNode.classList.add("typewriter-cursor");
+        cursorNode.classList.add("typing");
+        
+        h1.appendChild(textNode1);
+        h1.appendChild(spanNode);
+        h1.appendChild(cursorNode);
+        
+        function typeWriter() {
+            if (!isPart2) {
+                if (i < part1.length) {
+                    textNode1.nodeValue += part1.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    isPart2 = true;
+                    i = 0;
+                    setTimeout(typeWriter, 100);
+                }
+            } else {
+                if (i < part2.length) {
+                    spanNode.textContent += part2.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    // Finished typing, remove typing class to start blinking
+                    cursorNode.classList.remove("typing");
+                }
+            }
+        }
+        
+        setTimeout(typeWriter, 500); // Start delay
+    });
+</script>
 
 </body>
 </html>
